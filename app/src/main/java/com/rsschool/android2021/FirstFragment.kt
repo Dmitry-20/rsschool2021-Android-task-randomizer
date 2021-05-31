@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 
@@ -34,31 +35,54 @@ class FirstFragment : Fragment() {
 
         val result = arguments?.getInt(PREVIOUS_RESULT_KEY)
         previousResult?.text = "Previous result: ${result.toString()}"
-        val min = minEditText?.text.toString().toIntOrNull() ?: 0
-        val max = maxEditText?.text.toString().toIntOrNull() ?: 0
+
         minEditText?.addTextChangedListener{
-            if(min>0 && max>0 && min<max){
-                generateButton?.isEnabled=true
+            val min = minEditText?.text.toString().toIntOrNull()
+            val max = maxEditText?.text.toString().toIntOrNull()
+
+            if (min == null || max == null){
+                Toast.makeText(getActivity(), "max or min NULL", Toast.LENGTH_SHORT).show()
+                generateButton?.isEnabled=false
             }
+            else{
+                if(min > Int.MAX_VALUE)Toast.makeText(getActivity(), " min is BIG", Toast.LENGTH_SHORT).show()
+                if(max > Int.MAX_VALUE)Toast.makeText(getActivity(), " min is BIG", Toast.LENGTH_SHORT).show()
+                if (min>max){
+                    generateButton?.isEnabled=false
+                    Toast.makeText(getActivity(), "min > max", Toast.LENGTH_SHORT).show()
+                }
+                if(min>0 && max>0 && min<max){
+                    Toast.makeText(getActivity(), "max and min OK", Toast.LENGTH_SHORT).show()
+                    generateButton?.isEnabled=true
+                }
+            }
+
         }
         maxEditText?.addTextChangedListener{
-            if(min>0 && max>0 && min<max){
-                generateButton?.isEnabled=true
+            val min = minEditText?.text.toString().toIntOrNull()
+            val max = maxEditText?.text.toString().toIntOrNull()
+            Int.MAX_VALUE
+            if (min == null || max == null){
+                Toast.makeText(getActivity(), "max or min NULL", Toast.LENGTH_SHORT).show()
+                generateButton?.isEnabled=false
+            }
+            else{
+                if(min > Int.MAX_VALUE)Toast.makeText(getActivity(), " min is BIG", Toast.LENGTH_SHORT).show()
+                if(max > Int.MAX_VALUE)Toast.makeText(getActivity(), " min is BIG", Toast.LENGTH_SHORT).show()
+                if (min>max){
+                    generateButton?.isEnabled=false
+                    Toast.makeText(getActivity(), "min > max", Toast.LENGTH_SHORT).show()
+                }
+                if(min>0 && max>0 && min<max){
+                    Toast.makeText(getActivity(), "max and min OK", Toast.LENGTH_SHORT).show()
+                    generateButton?.isEnabled=true
+                }
             }
         }
-       // val min = minEditText?.text.toString().toIntOrNull() ?: 0
-        //val max = maxEditText?.text.toString().toIntOrNull() ?: 0
-       // if(min>max)
-       // {
-       //     generateButton?.isEnabled=false
-       // }
-      // minEditText?.addTextChangedListener()
-        // TODO: val min = ...
-        // TODO: val max = ...
-
 
         generateButton?.setOnClickListener {
-
+            val min = minEditText?.text.toString().toInt()
+            val max = maxEditText?.text.toString().toInt()
             if (min <= max) {
                 (activity as SwitchFragment).switchToSecondFragment(min, max)
             }

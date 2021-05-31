@@ -30,7 +30,8 @@ class SecondFragment : Fragment() {
         val max = arguments?.getInt(MAX_VALUE_KEY) ?: 0
 
         result?.text = generate(min, max).toString()
-
+        //val k= 48
+        //result?.text = k.toString()
         backButton?.setOnClickListener {
             // TODO: implement back
             (activity as SwitchFragment).switchToFirstFragment(result?.text.toString().toInt())
@@ -41,6 +42,7 @@ class SecondFragment : Fragment() {
         return (min..max).random()
 
     }
+
 
     companion object {
 
