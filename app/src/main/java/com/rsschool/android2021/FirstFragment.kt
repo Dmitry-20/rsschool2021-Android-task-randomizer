@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 
 class FirstFragment : Fragment() {
@@ -27,25 +28,39 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         previousResult = view.findViewById(R.id.previous_result)
         generateButton = view.findViewById(R.id.generate)
-
+        generateButton?.isEnabled=false
         minEditText = view.findViewById(R.id.min_value)
         maxEditText = view.findViewById(R.id.max_value)
 
         val result = arguments?.getInt(PREVIOUS_RESULT_KEY)
         previousResult?.text = "Previous result: ${result.toString()}"
-
+        val min = minEditText?.text.toString().toIntOrNull() ?: 0
+        val max = maxEditText?.text.toString().toIntOrNull() ?: 0
+        minEditText?.addTextChangedListener{
+            if(min>0 && max>0 && min<max){
+                generateButton?.isEnabled=true
+            }
+        }
+        maxEditText?.addTextChangedListener{
+            if(min>0 && max>0 && min<max){
+                generateButton?.isEnabled=true
+            }
+        }
+       // val min = minEditText?.text.toString().toIntOrNull() ?: 0
+        //val max = maxEditText?.text.toString().toIntOrNull() ?: 0
+       // if(min>max)
+       // {
+       //     generateButton?.isEnabled=false
+       // }
+      // minEditText?.addTextChangedListener()
         // TODO: val min = ...
         // TODO: val max = ...
 
+
         generateButton?.setOnClickListener {
-            // TODO: send min and max to the SecondFragment
-            val min = minEditText?.text.toString().toIntOrNull() ?: 0
-            val max = maxEditText?.text.toString().toIntOrNull() ?: 0
+
             if (min <= max) {
                 (activity as SwitchFragment).switchToSecondFragment(min, max)
-            } else {
-                //generateButton.setEnabled(false)
-                 (activity as SwitchFragment).switchToSecondFragment(max, min)
             }
         }
     }
